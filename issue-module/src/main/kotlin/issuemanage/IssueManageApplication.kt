@@ -1,4 +1,4 @@
-package com.example.issuemanage
+package issuemanage
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
