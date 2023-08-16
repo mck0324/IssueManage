@@ -48,7 +48,14 @@ class IssueController(
             @RequestBody request: IssueRequest,
     ) = issueService.edit(authUser.userId, id, request)
 
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun delete(
+            authUser: AuthUser,
+            @PathVariable id: Long,
+    ) {
+        issueService.delete(id)
+    }
 
 
 }
