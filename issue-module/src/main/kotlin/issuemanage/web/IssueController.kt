@@ -1,12 +1,15 @@
 package issuemanage.web
 
 import issuemanage.config.AuthUser
+import issuemanage.domain.enums.IssueStauts
 import issuemanage.model.IssueRequest
 import issuemanage.model.IssueResponse
 import issuemanage.service.IssueService
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -23,5 +26,11 @@ class IssueController(
         return issueService.create(authUser.userId,request)
     }
 
-
+    @GetMapping
+    fun getAll(
+            authUser: AuthUser,
+            @RequestParam(required = false, defaultValue = "TODO") status: IssueStauts
+    ): List<IssueResponse>? {
+        return issueService.getAll(status)
+    }
 }

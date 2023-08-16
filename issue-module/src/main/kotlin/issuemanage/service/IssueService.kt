@@ -2,6 +2,7 @@ package issuemanage.service
 
 import issuemanage.domain.Issue
 import issuemanage.domain.IssueRepository
+import issuemanage.domain.enums.IssueStauts
 import issuemanage.model.IssueRequest
 import issuemanage.model.IssueResponse
 import org.springframework.stereotype.Service
@@ -23,4 +24,11 @@ class IssueService(
         )
         return IssueResponse(issueRepository.save(issue))
     }
+
+    @Transactional(readOnly = true)
+    fun getAll(status: IssueStauts) =
+            issueRepository.findAllByStatusOrderByCreatedAtDesc(status)
+                    ?.map { IssueResponse(it) }
+
+
 }
