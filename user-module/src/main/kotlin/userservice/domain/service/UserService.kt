@@ -1,11 +1,13 @@
 package userservice.domain.service
 
+import org.springframework.stereotype.Service
 import userservice.domain.entity.User
 import userservice.domain.model.SignUpRequest
 import userservice.domain.repository.UserRepository
 import userservice.exception.UserExistsException
 import userservice.utils.BCryptUtils
 
+@Service
 class UserService(
         private val userRepository: UserRepository
 ) {
