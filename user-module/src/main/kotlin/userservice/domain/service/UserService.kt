@@ -13,12 +13,17 @@ import userservice.exception.UserNotFoundException
 import userservice.utils.BCryptUtils
 import userservice.utils.JWTClaim
 import userservice.utils.JWTUtils
+import java.time.Duration
 
 @Service
 class UserService(
         private val userRepository: UserRepository,
         private val jwtProperties: JWTProperties,
+        private val cacheManager: CoroutinCacheManager<User>,
 ) {
+    companion object {
+        private val CACHE_TTL = Duration.ofMinutes(1)
+    }
     suspend fun signUp(signUpRequest: SignUpRequest) {
         with(signUpRequest) {
             userRepository.findByEmail(this.email)?. let {
@@ -47,6 +52,7 @@ class UserService(
             )
             val token = JWTUtils.createToken(jwtClaim, jwtProperties)
 
+            cacheManager.awaitPut(key = token, value = this, ttl = CACHE_TTL)
             SignInResponse(
                     email = email,
                     username = username,
